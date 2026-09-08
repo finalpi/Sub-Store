@@ -5,6 +5,7 @@ import {
   getPathQueryParam,
   parseSafeIntegerValue,
 } from '../../transport-path';
+import { buildMihomoEchOptsFromXrayFields } from '../../ech-utils';
 import { isIPv6 } from '@/utils';
 
 const unsafePathSegments = new Set(["__proto__", "constructor", "prototype"]);
@@ -118,6 +119,14 @@ function parseTrojan(url) {
 
   proxy["name-cert-verify"] =
     proxy._vcn?.[0];
+
+  proxy._echConfigList = params.ech;
+  const echOpts = buildMihomoEchOptsFromXrayFields({
+    echConfigList: params.ech,
+  });
+  if (echOpts) {
+    proxy["ech-opts"] = echOpts;
+  }
 
 
   if (params.alpn) {

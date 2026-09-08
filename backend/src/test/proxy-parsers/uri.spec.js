@@ -727,6 +727,21 @@ describe('Proxy URI parser coverage', function () {
             });
         });
 
+        it('parses Trojan URIs with ECH DNS sidecar fields', function () {
+            const proxy = parseOne(
+                'trojan://trojan-pass@trojan.example.com:443?ech=cloudflare-ech.com%2Bhttps%3A%2F%2Fdoh.pub%2Fdns-query#Trojan%20ECH',
+            );
+
+            expect(proxy._echConfigList).to.equal(
+                'cloudflare-ech.com+https://doh.pub/dns-query',
+            );
+            expect(proxy['ech-opts']).to.deep.equal({
+                enable: true,
+                _dns: 'https://doh.pub/dns-query',
+                'query-server-name': 'cloudflare-ech.com',
+            });
+        });
+
         it('parses Trojan vcn values into mihomo and sidecar fields', function () {
             const proxy = parseOne(
                 'trojan://trojan-pass@trojan.example.com:443?vcn=first.example.com%2Csecond.example.com#Trojan%20VCN',
