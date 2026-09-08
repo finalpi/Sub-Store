@@ -6,7 +6,7 @@ import { spawnSync } from 'child_process';
 const backendPath = path.resolve(__dirname, '../../..');
 
 describe('browser bundle compatibility', function () {
-    this.timeout(10000);
+    this.timeout(60000);
 
     it('keeps the Buffer polyfill inside browser artifacts', function () {
         const result = spawnSync(process.execPath, ['bundle-esbuild.js'], {

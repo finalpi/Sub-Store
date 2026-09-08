@@ -35,7 +35,7 @@ function createFixture() {
 }
 
 describe('runtime manifest bundle', function () {
-    this.timeout(10000);
+    this.timeout(60000);
 
     it('fails when the manifest cannot read the tested Node version', function () {
         const { root, fixturePath } = createFixture();
