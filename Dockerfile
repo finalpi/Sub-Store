@@ -12,7 +12,9 @@ WORKDIR /src
 COPY . ./
 
 WORKDIR /src/backend
-RUN pnpm test && pnpm bundle:esbuild
+RUN SUB_STORE_FRONTEND_BACKEND_PATH=/ pnpm exec mocha src/test/**/*.spec.js \
+        --require @babel/register --recursive --timeout 60000 \
+    && pnpm bundle:esbuild
 
 
 FROM alpine:3.22 AS frontend-downloader
