@@ -8,7 +8,10 @@ COPY backend/pnpm-workspace.yaml ./
 COPY backend/patches ./patches
 RUN pnpm install --no-frozen-lockfile
 
-COPY backend/ ./
+WORKDIR /src
+COPY . ./
+
+WORKDIR /src/backend
 RUN pnpm test && pnpm bundle:esbuild
 
 
