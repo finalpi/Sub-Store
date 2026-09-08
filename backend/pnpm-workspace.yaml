@@ -1,4 +1,7 @@
-onlyBuiltDependencies:
-  - core-js
-  - esbuild
-  - nodemon
+allowBuilds:
+  core-js: true
+  esbuild: true
+  nodemon: true
+
+patchedDependencies:
+  http-proxy@1.18.1: patches/http-proxy@1.18.1.patch
