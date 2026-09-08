@@ -1206,6 +1206,16 @@ export default function URI_Producer() {
                 if (Array.isArray(proxy._vcn) || trojanCertNames) {
                     trojanVcn = `&vcn=${encodeURIComponent(trojanCertNames)}`;
                 }
+                let trojanEch = '';
+                const trojanEchConfigList = buildXrayEchConfigListFromMihomo(
+                    proxy['ech-opts'],
+                    proxy._echConfigList,
+                );
+                if (trojanEchConfigList) {
+                    trojanEch = `&ech=${encodeURIComponent(
+                        trojanEchConfigList,
+                    )}`;
+                }
                 let trojanAlpn = '';
                 if (proxy.alpn) {
                     trojanAlpn = `&alpn=${encodeURIComponent(
@@ -1248,7 +1258,7 @@ export default function URI_Producer() {
                     proxy.port
                 }?sni=${encodeURIComponent(proxy.sni || proxy.server)}${
                     proxy['skip-cert-verify'] ? '&allowInsecure=1' : ''
-                }${trojanTransport}${trojanAlpn}${trojanFp}${trojanPcs}${trojanVcn}${trojanSecurity}${trojanSid}${trojanPbk}${trojanSpx}${trojanMode}${trojanExtra}#${encodeURIComponent(
+                }${trojanTransport}${trojanAlpn}${trojanFp}${trojanPcs}${trojanVcn}${trojanEch}${trojanSecurity}${trojanSid}${trojanPbk}${trojanSpx}${trojanMode}${trojanExtra}#${encodeURIComponent(
                     proxy.name,
                 )}`;
                 break;

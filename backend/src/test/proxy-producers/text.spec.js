@@ -5395,6 +5395,33 @@ describe('Proxy text producers', function () {
         );
     });
 
+    it('preserves Trojan ECH fields in URI output', function () {
+        const output = produceExternal('URI', {
+            type: 'trojan',
+            name: 'URI Trojan ECH',
+            server: 'trojan.example.com',
+            port: 443,
+            password: 'secret',
+            tls: true,
+            sni: 'sni.example.com',
+            'ech-opts': {
+                enable: true,
+                _dns: 'https://doh.pub/dns-query',
+                'query-server-name': 'cloudflare-ech.com',
+            },
+        });
+
+        expect(output).to.equal(
+            'trojan://secret@trojan.example.com:443?sni=sni.example.com&ech=cloudflare-ech.com%2Bhttps%3A%2F%2Fdoh.pub%2Fdns-query#URI%20Trojan%20ECH',
+        );
+        const reparsed = ProxyUtils.parse(output)[0];
+        expect(reparsed['ech-opts']).to.deep.equal({
+            enable: true,
+            _dns: 'https://doh.pub/dns-query',
+            'query-server-name': 'cloudflare-ech.com',
+        });
+    });
+
     it('produces URI Trojan websocket links with early data metadata', function () {
         const output = produceExternal('URI', {
             type: 'trojan',
